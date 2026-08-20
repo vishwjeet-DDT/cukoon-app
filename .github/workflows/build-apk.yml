@@ -33,7 +33,7 @@ jobs:
         run: npx expo prebuild -p android --no-install
 
       - name: Increase Gradle download timeout
-        run: sed -i 's/^networkTimeout=.*/networkTimeout=60000/' android/gradle/wrapper/gradle-wrapper.properties
+        run: sed -i '/^networkTimeout=/d; $a networkTimeout=60000' android/gradle/wrapper/gradle-wrapper.properties
 
       - name: Grant execute permission to gradlew
         run: chmod +x android/gradlew
