@@ -38,13 +38,23 @@ cukoon-app/
 2. GitHub repo khol ke **Actions** tab pe jao — workflow "Build Cukoon APK" automatically
    chalega push par (ya "Run workflow" button se manually trigger karo).
 3. Build complete hone ke baad (~5-8 min), us run ke andar **Artifacts** section mein
-   `cukoon-debug-apk` milega — download karo, usme `app-debug.apk` hoga.
+   `cukoon-release-apk` milega — download karo, usme `app-release.apk` hoga.
 4. Yeh APK seedha kisi Android phone par install ho jayega (Settings > Install unknown apps
-   allow karna hoga, kyunki yeh debug build hai, Play Store se nahi).
+   allow karna hoga).
 
-> Yeh workflow `expo prebuild` + `gradlew assembleDebug` use karta hai — koi Expo/EAS login
+> Yeh workflow `expo prebuild` + `gradlew assembleRelease` use karta hai — koi Expo/EAS login
 > ya credentials ki zaroorat nahi. 100% free GitHub Actions minutes (public repo) mein build
 > ho jata hai.
+
+### "Unable to load script" crash — kyun aata hai aur fix
+Agar aapne pehle `assembleDebug` se APK banayi thi aur usko standalone phone par install
+kiya, toh yeh error aayega: debug build ka JS bundle APK ke andar pack nahi hota — wo
+Metro dev server (`npx react-native start`) se live JS maangta hai, jo standalone phone
+par available nahi hota. **`assembleRelease`** JS bundle ko APK ke andar hi embed kar deta
+hai, isliye ab koi dev server chahiye nahi — yeh workflow ab release build banata hai.
+RN template by default agar aapne apna signing keystore configure nahi kiya, toh release
+build automatically debug keystore se sign ho jata hai (testing ke liye theek hai, Play
+Store upload ke liye niche wala "Release APK" section follow karo).
 
 ## Option B — Apne Ubuntu machine par local build
 
